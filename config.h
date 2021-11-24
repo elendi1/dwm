@@ -43,11 +43,11 @@ static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm]     = { tn_foreground, tn_background, tn_background },
 	[SchemeSel]      = { tn_foreground, tn_background, tn_green  },
-        //[SchemeStatus]   = { tn_foreground, tn_background, "#000000"  }, // Statusbar right {text, background, not used}
-	//[SchemeTagsSel]  = { tn_green,      tn_background, "#000000"  }, // Tagbar left selected {text, background, not used}}
-        //[SchemeTagsNorm] = { tn_foreground, tn_background, "#000000"  }, // Tagbar left unselected {text, background}
-        //[SchemeInfoSel]  = { tn_foreground, tn_background, "#000000"  }, // infobar middle  selected {text, background, not used}
-        //[SchemeInfoNorm] = { tn_foreground, tn_background, "#000000"  }, // infobar middle  unselected {text, background, not used}
+        [SchemeStatus]   = { tn_foreground, tn_background, "#000000"  }, // Statusbar right {text, background, not used}
+	[SchemeTagsSel]  = { tn_green,      tn_background, "#000000"  }, // Tagbar left selected {text, background, not used}}
+        [SchemeTagsNorm] = { tn_foreground, tn_background, "#000000"  }, // Tagbar left unselected {text, background}
+        [SchemeInfoSel]  = { tn_foreground, tn_background, "#000000"  }, // infobar middle  selected {text, background, not used}
+        [SchemeInfoNorm] = { tn_foreground, tn_background, "#000000"  }, // infobar middle  unselected {text, background, not used}
 };
 
 /* tagging */
