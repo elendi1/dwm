@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappih    = 5;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 5;       /* vert inner gap between windows */
@@ -10,17 +10,44 @@ static const unsigned int gappov    = 5;       /* vert outer gap between windows
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
+static const char *fonts[]          = { "FiraCode Nerd Font Mono:size=10" };
+static const char dmenufont[]       = "FiraCode Nerd Font Mono:size=10";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
+// TokyoNight Night colors
+static const char tn_background[]   = "#1a1b26";
+static const char tn_foreground[]   = "#c0caf5";
+static const char tn_black[]        = "#15161e";
+static const char tn_red[]          = "#f7768e";
+static const char tn_green[]        = "#9ece6a";
+static const char tn_yellow[]       = "#e0af68";
+static const char tn_blue[]         = "#7aa2f7";
+static const char tn_magenta[]      = "#bb9af7";
+static const char tn_cyan[]         = "#7dcfff";
+static const char tn_white[]        = "#a9b1d6";
+static const char tn_black_b[]      = "#414868";
+static const char tn_red_b[]        = "#F7768e";
+static const char tn_green_b[]      = "#9ece6a";
+static const char tn_yellow_b[]     = "#E0af68";
+static const char tn_blue_b[]       = "#7aa2f7";
+static const char tn_magenta_b[]    = "#Bb9af7";
+static const char tn_cyan_b[]       = "#7dcfff";
+static const char tn_white_b[]      = "#C0caf5";
+static const char tn_16[]           = "#ff9e64";
+static const char tn_17[]           = "#db4b4b";
+
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeNorm]     = { tn_foreground, tn_background, tn_background },
+	[SchemeSel]      = { tn_foreground, tn_background, tn_green  },
+        //[SchemeStatus]   = { tn_foreground, tn_background, "#000000"  }, // Statusbar right {text, background, not used}
+	//[SchemeTagsSel]  = { tn_green,      tn_background, "#000000"  }, // Tagbar left selected {text, background, not used}}
+        //[SchemeTagsNorm] = { tn_foreground, tn_background, "#000000"  }, // Tagbar left unselected {text, background}
+        //[SchemeInfoSel]  = { tn_foreground, tn_background, "#000000"  }, // infobar middle  selected {text, background, not used}
+        //[SchemeInfoNorm] = { tn_foreground, tn_background, "#000000"  }, // infobar middle  unselected {text, background, not used}
 };
 
 /* tagging */
@@ -37,7 +64,7 @@ static const Rule rules[] = {
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
