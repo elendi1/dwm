@@ -893,7 +893,7 @@ drawbar(Monitor *m)
 		if (c->isurgent)
 			urg |= c->tags;
 		for (i = 0; i < LENGTH(tags); i++)
-			if (c->tags & (1<<i)) {
+			if ((masterclientontag[i] == tags[i]) && c->tags & (1<<i)) {
 				XClassHint ch = { NULL, NULL };
 				XGetClassHint(dpy, c->win, &ch);
         for (j = 0; j < LENGTH(classicons); j++) {
