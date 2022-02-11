@@ -20,7 +20,6 @@
  *
  * To understand everything else, start reading main().
  */
-#include <ctype.h> /* for making tab label lowercase, very tiny standard library */
 #include <errno.h>
 #include <locale.h>
 #include <signal.h>
@@ -147,6 +146,11 @@ typedef struct {
 	int isfloating;
 	int monitor;
 } Rule;
+
+typedef struct {
+  char class[8];
+  char icon[8];
+} ClassIcon;
 
 /* function declarations */
 static void applyrules(Client *c);
@@ -872,9 +876,8 @@ drawbar(Monitor *m)
 	int x, w, tw = 0;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
-	unsigned int i, occ = 0, urg = 0;
+	unsigned int i, j, occ = 0, urg = 0;
 	Client *c;
-	char taglabel[64];
 	char *masterclientontag[LENGTH(tags)];
 
 	/* draw status first so it can be overdrawn by tags later */
@@ -883,28 +886,26 @@ drawbar(Monitor *m)
 	}
 
 	for (i = 0; i < LENGTH(tags); i++)
-		masterclientontag[i] = NULL;
+		masterclientontag[i] = (char *)tags[i];
 
 	for (c = m->clients; c; c = c->next) {
 		occ |= c->tags;
 		if (c->isurgent)
 			urg |= c->tags;
 		for (i = 0; i < LENGTH(tags); i++)
-			if (!masterclientontag[i] && c->tags & (1<<i)) {
+			if (c->tags & (1<<i)) {
 				XClassHint ch = { NULL, NULL };
 				XGetClassHint(dpy, c->win, &ch);
-				masterclientontag[i] = ch.res_class;
-				if (lcaselbl)
-					masterclientontag[i][0] = tolower(masterclientontag[i][0]);
+        for (j = 0; j < LENGTH(classicons); j++) {
+          if (strstr(ch.res_class, classicons[j].class)) {
+            masterclientontag[i] = (char *)classicons[j].icon;
+          }
+        }
 			}
 	}
+
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
-		if (masterclientontag[i])
-			snprintf(taglabel, 64, ptagf, tags[i], masterclientontag[i]);
-		else
-			snprintf(taglabel, 64, etagf, tags[i]);
-		masterclientontag[i] = taglabel;
 		tagw[i] = w = TEXTW(masterclientontag[i]);
 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeTagsSel : SchemeTagsNorm]);
 		drw_text(drw, x, 0, w, bh, lrpad / 2, masterclientontag[i], urg & 1 << i);
