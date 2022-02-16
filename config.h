@@ -87,6 +87,7 @@ static const ClassIcon classicons[] = {
   {"firefox", ""}, // Firefox
   {"Zathu", ""},   // Zathura
   {"Thunde", ""},  // Thunderbird
+  {"Chrom", ""},  // Teams
   {"Micros", ""},  // Teams
 };
 

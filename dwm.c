@@ -876,32 +876,42 @@ drawbar(Monitor *m)
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
 	unsigned int i, j, occ = 0, urg = 0;
+  unsigned char tagclients[LENGTH(tags)];
 	Client *c;
 	char *masterclientontag[LENGTH(tags)];
+
+  if (!m->showbar)
+    return; 
 
 	/* draw status first so it can be overdrawn by tags later */
 	if (m == selmon) { /* status is only drawn on selected monitor */
 		tw = m->ww - drawstatusbar(m, bh, stext);
 	}
 
-	for (i = 0; i < LENGTH(tags); i++)
+	for (i = 0; i < LENGTH(tags); i++) {
 		masterclientontag[i] = (char *)tags[i];
+    tagclients[i] = 0;
+  }
 
 	for (c = m->clients; c; c = c->next) {
 		occ |= c->tags;
 		if (c->isurgent)
 			urg |= c->tags;
-		for (i = 0; i < LENGTH(tags); i++)
-			if ((masterclientontag[i] == tags[i]) && c->tags & (1<<i)) {
-				XClassHint ch = { NULL, NULL };
-				XGetClassHint(dpy, c->win, &ch);
-        for (j = 0; j < LENGTH(classicons); j++) {
-          // if (strstr(ch.res_class, classicons[j].class)) {
-          if (strncmp(ch.res_class, classicons[j].class, strlen(classicons[j].class)) == 0) {
-            masterclientontag[i] = (char *)classicons[j].icon;
+		for (i = 0; i < LENGTH(tags); i++) {
+      if (c->tags & (1<<i)) { 
+        tagclients[i]++;
+			  if (masterclientontag[i] == tags[i]) {
+			  	XClassHint ch = { NULL, NULL };
+			  	XGetClassHint(dpy, c->win, &ch);
+          for (j = 0; j < LENGTH(classicons); j++) {
+            if (strncmp(ch.res_class, classicons[j].class, strlen(classicons[j].class)) == 0) {
+              masterclientontag[i] = (char *)classicons[j].icon;
+              break;
+            }
           }
-        }
-			}
+			  }
+      }
+    }
 	}
 
 	x = 0;
@@ -909,8 +919,10 @@ drawbar(Monitor *m)
 		tagw[i] = w = TEXTW(masterclientontag[i]);
 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeTagsSel : SchemeTagsNorm]);
 		drw_text(drw, x, 0, w, bh, lrpad / 2, masterclientontag[i], urg & 1 << i);
-		drw_rect(drw, x + boxs, ((i % 3) + 1) * boxs + (i % 3) * drw->fonts->h/3, boxw, boxw,
-    occ & 1 << i,	urg & 1 << i);
+    for (j = 0; (j < tagclients[i]) && (j < 3); j++) {
+		  drw_rect(drw, x + boxs, ((j % 3) + 1) * boxs + (j % 3) * drw->fonts->h/3, boxw, boxw,
+                m == selmon && selmon->sel && selmon->sel->tags & 1 << i,	urg & 1 << i);
+    }
 		x += w;
 	}
 	w = blw = TEXTW(m->ltsymbol);
