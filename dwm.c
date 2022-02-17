@@ -875,10 +875,11 @@ drawbar(Monitor *m)
 	int x, w, tw = 0;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
-	int i, j, occ = 0, urg = 0;
-  signed char tagclients[LENGTH(tags)];
+	unsigned int i, occ = 0, urg = 0;
 	Client *c;
-	char *masterclientontag[LENGTH(tags)];
+  int j;
+  signed char tagclients[LENGTH(tags)];
+	char *tagmasterclient[LENGTH(tags)];
 
   if (!m->showbar)
     return; 
@@ -889,7 +890,7 @@ drawbar(Monitor *m)
 	}
 
 	for (i = 0; i < LENGTH(tags); i++) {
-		masterclientontag[i] = (char *)tags[i];
+		tagmasterclient[i] = (char *)tags[i];
     tagclients[i] = 0;
   }
 
@@ -900,12 +901,12 @@ drawbar(Monitor *m)
 		for (i = 0; i < LENGTH(tags); i++) {
       if (c->tags & (1<<i)) { 
         tagclients[i]++;
-			  if (masterclientontag[i] == tags[i]) {
+			  if (tagmasterclient[i] == tags[i]) {
 			  	XClassHint ch = { NULL, NULL };
 			  	XGetClassHint(dpy, c->win, &ch);
           for (j = 0; j < LENGTH(classicons); j++) {
             if (strncmp(ch.res_class, classicons[j].class, strlen(classicons[j].class)) == 0) {
-              masterclientontag[i] = (char *)classicons[j].icon;
+              tagmasterclient[i] = (char *)classicons[j].icon;
               break;
             }
           }
@@ -916,9 +917,9 @@ drawbar(Monitor *m)
 
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
-		tagw[i] = w = TEXTW(masterclientontag[i]);
+		tagw[i] = w = TEXTW(tagmasterclient[i]);
 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeTagsSel : SchemeTagsNorm]);
-		drw_text(drw, x, 0, w, bh, lrpad / 2, masterclientontag[i], urg & 1 << i);
+		drw_text(drw, x, 0, w, bh, lrpad / 2, tagmasterclient[i], urg & 1 << i);
     for (j = 0; (j < tagclients[i]) && (j < 3); j++) {
 		  drw_rect(drw, x + boxs, ((j % 3) + 1) * boxs + (j % 3) * drw->fonts->h/3, boxw, boxw,
                 j < (tagclients[i] - 3),	urg & 1 << i);
