@@ -875,8 +875,8 @@ drawbar(Monitor *m)
 	int x, w, tw = 0;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
-	unsigned int i, j, occ = 0, urg = 0;
-  unsigned char tagclients[LENGTH(tags)];
+	int i, j, occ = 0, urg = 0;
+  signed char tagclients[LENGTH(tags)];
 	Client *c;
 	char *masterclientontag[LENGTH(tags)];
 
@@ -921,7 +921,7 @@ drawbar(Monitor *m)
 		drw_text(drw, x, 0, w, bh, lrpad / 2, masterclientontag[i], urg & 1 << i);
     for (j = 0; (j < tagclients[i]) && (j < 3); j++) {
 		  drw_rect(drw, x + boxs, ((j % 3) + 1) * boxs + (j % 3) * drw->fonts->h/3, boxw, boxw,
-                m == selmon && selmon->sel && selmon->sel->tags & 1 << i,	urg & 1 << i);
+                j < (tagclients[i] - 3),	urg & 1 << i);
     }
 		x += w;
 	}
