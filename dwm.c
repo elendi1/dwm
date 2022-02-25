@@ -904,10 +904,12 @@ drawbar(Monitor *m)
 			  if (tagmasterclient[i] == tags[i]) {
 			  	XClassHint ch = { NULL, NULL };
 			  	XGetClassHint(dpy, c->win, &ch);
-          for (j = 0; j < LENGTH(classicons); j++) {
-            if (strncmp(ch.res_class, classicons[j].class, strlen(classicons[j].class)) == 0) {
-              tagmasterclient[i] = (char *)classicons[j].icon;
-              break;
+          if (ch.res_class != NULL) {
+            for (j = 0; j < LENGTH(classicons); j++) {
+              if (strncmp(ch.res_class, classicons[j].class, strlen(classicons[j].class)) == 0) {
+                tagmasterclient[i] = (char *)classicons[j].icon;
+                break;
+              }
             }
           }
 			  }
