@@ -88,7 +88,8 @@ static const ClassIcon classicons[] = {
   {"Zathu", ""},   // Zathura
   {"Thunde", ""},  // Thunderbird
   {"Chrom", ""},  // Chromium
-  {"Micros", ""},  // Teams
+  {"Desktop", ""},  // OnlyOffice
+  {"Xournal", ""}, // Xournalpp
 };
 
 /* layout(s) */
